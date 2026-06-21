@@ -26,7 +26,7 @@ While it needs some work this is a good starting point for an RPG CGI Web Servic
 - Compile the ```SQLCGI01``` SQLRPGLE sample CGI program.
 - Install postman or your favorite web API testing tool and give it a try.
   
-## Techical things I learned
+## Technical notes
 - I set up the program to always use a *NEW activation group to get a unique program instance. I was getting data left over in the request buffers. Where I saw it was when I tried running a CL command. If I didn't clear the buffer before the command call and the next command was shorter than the previous it would sometimes show as null until I fixed it by clearing the incoming buffers or uses activation group *NEW to force a new program instance to run.
 - If I didn't do the above I needed to manually clear the data buffers for incoming requests, even when I set the *LR indicator on before exiting. It would appear even with *LR on and the the program running in the same activation group that the program never really unloaded. (at least the incoming memory buffers. Perhaps those are tied to the actual CGI job). Perhaps bigger minds than mine can analyze this better, but using activation group *NEW or clearing incoming stdin buffers manually before use seems to have resolved the issue for now.
 - The Apache server requires special rewrite settings in order to pass the Authorization header. It also passes the actual header value as ```HTTP_AUTHORIZATION``` and not ```Authorization``` to the CGI program.
